@@ -15,6 +15,8 @@ namespace IdentityDemo.Controllers
             Dictionary<string, object> data = new Dictionary<string, object>();
             data.Add("Placeholder", "Placeholder");
 
+            Console.WriteLine("GIT Demo");
+
             return View(data);
         }
     }
