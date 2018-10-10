@@ -1,0 +1,61 @@
+﻿using IdentityDemo.Infrastructure;
+using IdentityDemo.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+
+namespace IdentityDemo.Controllers
+{
+    [Authorize]
+    public class AccountController : Controller
+    {
+        private AppUserManager UserManager{
+            get{
+                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+            }
+        }
+        private IAuthenticationManager AuthManager {
+            get {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
+        [AllowAnonymous]
+        // GET: Account
+        public ActionResult Login(string returnUrl)
+        {            
+            ViewBag.ReturnUrl = returnUrl;
+            return View(new LoginModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginModel details, string returnUrl)
+        {
+            AppUser user = await UserManager.FindAsync(details.Name, details.Password);
+            if(user == null)
+            {
+                ModelState.AddModelError("", "Invalid Username or Password.");
+            }
+            else
+            {
+                ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                AuthManager.SignOut();
+                AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
+
+                return Redirect(returnUrl);
+            }
+
+            ViewBag.returnUrl = returnUrl;
+            return View(details);
+        }
+    }
+}

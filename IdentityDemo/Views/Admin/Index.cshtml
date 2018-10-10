@@ -1,0 +1,73 @@
+﻿@using IdentityDemo.Models
+@model IEnumerable<AppUser>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+<br/>
+
+<div class="row col-md-12">
+    <div class="card" style="width: inherit;">
+        <div class="card-header bg-dark text-white">
+            User Accounts
+        </div>
+        <div class="card-body" >
+            <table class="table table-striped">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+
+                @if(Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">No user accounts.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (AppUser user in Model)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <div class="row">
+                                    @using (Html.BeginForm("Edit", "Admin", new { Id = user.Id }, FormMethod.Post))
+                                    {   <button type="submit" class="btn btn-link text-info" style = "padding-top: 0px;">
+                                            <img src="~/Images/icon-edit.png" width="25" height="25" />
+                                        </button> 
+                                    }
+
+                                    @using (Html.BeginForm("Delete", "Admin", new { Id = user.Id }, FormMethod.Post))
+                                    {   <button type="submit" class="btn btn-link text-danger" onclick="return confirm('Are you sure to delete account of user \'@user.UserName\'?')">
+                                          <img src="~/Images/delete-icon.png" width="25" height="25" />
+                                        </button> 
+                                    }
+                                </div>
+                                
+                            </td>
+
+                            @*<td>
+                                <a href="@Url.Action("Edit", "Admin", new { Id = user.Id })" class="text text-info">Edit</a>
+                                <a href="@Url.Action("Delete", "Admin", new { Id = user.Id })" class="text text-danger"
+                                   onclick="return confirm('Are you sure to delete account of user \'@user.UserName\'?')">Delete</a>
+
+                            </td>*@
+                        </tr>
+                    }
+                }
+                
+            </table>
+            <br/>
+        </div>
+    </div>
+    <br/><br/>
+    @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-dark" })
+</div>
+
