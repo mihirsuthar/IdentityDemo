@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace IdentityDemo.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AdminController : Controller
     {
         private AppUserManager UserManager {
