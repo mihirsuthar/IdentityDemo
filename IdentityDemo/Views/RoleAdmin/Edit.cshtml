@@ -1,0 +1,86 @@
+﻿@using IdentityDemo.Models
+@model RoleEditModel
+
+@{
+    ViewBag.Title = "Edit Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Role</h2>
+
+<div class="row col-md-12">
+
+    @using (Html.BeginForm("EditRole", "RoleAdmin", FormMethod.Post, new { @class = "form-horizontal col-md-6" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger validation-errors" })
+        @*if (ViewBag.Errors != null)
+        {
+            <span class="alert alert-danger">
+                @foreach (string error in ViewBag.Errors)
+                {
+                    @error<br />
+                }
+            </span><br /><br />
+        }*@
+
+        <input type="hidden" name="roleName" value="@Model.Role.Name" />
+
+        <div class="card" style="width: inherit;">
+            <div class="card-header bg-dark text-white">
+                Add to @Model.Role.Name
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    @if (Model.NonMembers.Count() == 0)
+                    {
+                        <tr><td colspan="2">All users are members.</td></tr>
+                    }
+                    else
+                    {
+                        <tr><td>User Id</td><td>Add to Role</td></tr>
+                        foreach (AppUser user in Model.NonMembers)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>
+                                    <input type="checkbox" name="IdsToAdd" value="@user.Id" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="card" style="width: inherit;">
+            <div class="card-header bg-dark text-white">
+                Remove from @Model.Role.Name
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    @if (Model.Members.Count() == 0)
+                    {
+                        <tr><td colspan="2">No users are members.</td></tr>
+                    }
+                    else
+                    {
+                        <tr><td>User Id</td><td>Remove from Role</td></tr>
+                        foreach (AppUser user in Model.Members)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>
+                                    <input type="checkbox" name="IdsToDelete" value="@user.Id" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="@Url.Action("Index", "RoleAdmin")" class="btn btn-danger">Cancel</a>
+        </div>
+    }
+</div>     
