@@ -30,7 +30,12 @@ namespace IdentityDemo.Controllers
         [AllowAnonymous]
         // GET: Account
         public ActionResult Login(string returnUrl)
-        {            
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return View("Error", new string[] { "Access Denied" });
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View(new LoginModel());
         }
@@ -56,6 +61,13 @@ namespace IdentityDemo.Controllers
 
             ViewBag.returnUrl = returnUrl;
             return View(details);
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            AuthManager.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

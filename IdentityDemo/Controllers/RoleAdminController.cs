@@ -14,6 +14,7 @@ using IdentityDemo.Models;
 
 namespace IdentityDemo.Controllers
 {
+    [Authorize]
     public class RoleAdminController : Controller
     {
 

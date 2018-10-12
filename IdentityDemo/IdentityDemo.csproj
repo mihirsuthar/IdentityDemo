@@ -249,6 +249,7 @@
     <Content Include="scripts\popper-utils.min.js.map" />
     <Content Include="scripts\popper-utils.js.map" />
     <Content Include="Views\RoleAdmin\Edit.cshtml" />
+    <Content Include="Views\Account\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
