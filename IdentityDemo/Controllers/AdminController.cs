@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace IdentityDemo.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         private AppUserManager UserManager {
@@ -36,7 +36,7 @@ namespace IdentityDemo.Controllers
         {
             if(ModelState.IsValid)
             {
-                AppUser newUser = new AppUser { UserName = user.Name, Email = user.Email };
+                AppUser newUser = new AppUser { UserName = user.Name, Email = user.Email, City = user.City };
                 IdentityResult result = await UserManager.CreateAsync(newUser, user.Password);
 
                 if(result.Succeeded)
@@ -45,9 +45,7 @@ namespace IdentityDemo.Controllers
                 }
                 else
                 {
-                    AddErrorsFromResult(result);
-
-                    
+                    AddErrorsFromResult(result);                    
                 }
             }
             return View(user);

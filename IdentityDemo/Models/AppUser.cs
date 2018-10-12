@@ -9,5 +9,6 @@ namespace IdentityDemo.Models
     public class AppUser: IdentityUser
     {
         //additional properties go here
+        public string City { get; set; }
     }
 }

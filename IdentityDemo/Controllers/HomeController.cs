@@ -1,4 +1,8 @@
-﻿using System;
+﻿using IdentityDemo.Infrastructure;
+using IdentityDemo.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +12,18 @@ namespace IdentityDemo.Controllers
 {
     public class HomeController : Controller
     {
+        private AppUserManager UserManager{
+            get{
+                return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+            }
+        }
+
+        private AppUser CurrentUser{
+            get{
+                return UserManager.FindByName(HttpContext.User.Identity.Name);
+            }
+        }
+
         [Authorize]
         // GET: Home
         public ActionResult Index()

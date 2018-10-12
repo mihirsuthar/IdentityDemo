@@ -14,6 +14,8 @@ namespace IdentityDemo.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+
+        public string City { get; set; }
     }
 
     public class LoginModel
