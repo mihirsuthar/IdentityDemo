@@ -21,6 +21,7 @@ namespace IdentityDemo.Controllers
                 return HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
             }
         }
+
         private IAuthenticationManager AuthManager {
             get {
                 return HttpContext.GetOwinContext().Authentication;
@@ -53,6 +54,8 @@ namespace IdentityDemo.Controllers
             else
             {
                 ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                identity.AddClaims(LocationClaimsProvider.GetClaims(identity));
+                identity.AddClaims(ClaimsRoles.CreateRolesFromClaims(identity));
                 AuthManager.SignOut();
                 AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
 
